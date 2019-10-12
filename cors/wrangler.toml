@@ -1,0 +1,6 @@
+account_id = ""
+name = "my-worker"
+type = "webpack"
+route = ""
+workers_dev = false
+zone_id = ""
