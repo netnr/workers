@@ -17,35 +17,35 @@ addEventListener('fetch', event => {
  */
 async function handleRequest(request) {
 
-  //È¡ÓòÃûµÚÒ»¸öĞ±¸ÜºóµÄËùÓĞĞÅÏ¢Îª´úÀíÁ´½Ó
+  //å–åŸŸåç¬¬ä¸€ä¸ªæ–œæ åçš„æ‰€æœ‰ä¿¡æ¯ä¸ºä»£ç†é“¾æ¥
   let url = request.url.substr(8);
   url = url.substr(url.indexOf('/') + 1);
 
-  //·µ»Ø¶ÔÏó
+  //è¿”å›å¯¹è±¡
   var response;
 
-  //ĞèÒªºöÂÔµÄ´úÀí
+  //éœ€è¦å¿½ç•¥çš„ä»£ç†
   if (request.method == "OPTIONS" || url.length < 3 || url.indexOf('.') == -1 || url == "favicon.ico" || url == "robots.txt") {
-    //Êä³öÌáÊ¾
+    //è¾“å‡ºæç¤º
     var htm = [];
-    htm.push("Usage£ºHost/{URL}");
+    htm.push("Usageï¼šHost/{URL}");
 
     response = new Response(htm.join('\n\n'), { status: 200 });
   } else {
 
-    //²¹ÉÏÇ°×º http://
+    //è¡¥ä¸Šå‰ç¼€ http://
     if (url.toLowerCase().indexOf("http") == -1) {
       url = "http://" + url;
     }
 
-    //·¢Æğ fetch
+    //å‘èµ· fetch
     response = await fetch(url, {
       method: request.method,
       headers: request.headers
     });
   }
 
-  //Ìí¼Ó¿çÓòÍ·
+  //æ·»åŠ è·¨åŸŸå¤´
   var myHeaders = new Headers(response.headers);
   myHeaders.set("Access-Control-Allow-Origin", "*");
   myHeaders.set("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");
