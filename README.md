@@ -19,7 +19,17 @@ fetch("https://cors.zme.ink/" + $url).then(x => x.text()).then(console.log)
 ```
 
 ### 安装
-- <https://developers.cloudflare.com/workers/quickstart>
+- 文档：<https://developers.cloudflare.com/workers/quickstart>
+- clone 项目
+- 编辑 `index.js` 和 `wrangler.toml` (配置密钥)
+- `wrangler build` 构建
+- `wrangler publish` 发布
+
+### 套餐
+- 每天 10 万个请求（UTC + 0）
+- 每 10 分钟 1000 个请求
+- 每个请求最多10ms CPU时间
+- 首次请求后的最低延迟
 
 ### Source
 - <https://github.com/netnr/workers>
