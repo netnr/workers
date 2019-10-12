@@ -1,6 +1,6 @@
 account_id = ""
-name = "my-worker"
+name = "cors"
 type = "webpack"
-route = ""
+route = "cors.zme.ink/*"
 workers_dev = false
 zone_id = ""

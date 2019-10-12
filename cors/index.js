@@ -29,6 +29,7 @@ async function handleRequest(request) {
     //输出提示
     var htm = [];
     htm.push("Usage：Host/{URL}");
+    htm.push("Source：https://github.com/netnr/workers");
 
     response = new Response(htm.join('\n\n'), { status: 200 });
   } else {
