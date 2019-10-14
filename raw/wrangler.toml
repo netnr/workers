@@ -1,0 +1,6 @@
+account_id = ""
+name = "raw"
+type = "webpack"
+route = "raw.zme.ink/*"
+workers_dev = false
+zone_id = ""

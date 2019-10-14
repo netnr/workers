@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "raw",
+  "version": "1.0.0",
+  "description": "cors",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write '**/*.{js,css,json,md}'"
+  },
+  "author": "root",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^1.18.2"
+  }
+}
