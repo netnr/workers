@@ -1,35 +1,52 @@
-# Cloudflare Workers
+ï»¿# Cloudflare Workers
 
-### ×÷ÓÃ
-- Ö§³Ö¿çÓòÇëÇó£¨×ª»»²»Ö§³Ö¿çÓòÇëÇóµÄ½Ó¿Ú£©£¬¿ÉÖ±½Ó·¢Æğ ajax¡¢fetch
-- Ö§³ÖHTTPS£¨½â¾öÔ¶³ÌÊı¾İ½Ó¿Ú²»Ö§³ÖHTTPS£©
+## â¤ cors
+æ”¯æŒè·¨åŸŸè¯·æ±‚ï¼ˆè½¬æ¢ä¸æ”¯æŒè·¨åŸŸè¯·æ±‚çš„æ¥å£ï¼‰ï¼Œå¯ç›´æ¥å‘èµ· ajaxã€fetch  
+æ”¯æŒHTTPSï¼ˆè§£å†³è¿œç¨‹æ•°æ®æ¥å£ä¸æ”¯æŒHTTPSï¼‰
 
-### ½Ó¿Ú
+### æ¥å£
 - `Host/{URL}`
 - `https://cors.zme.ink/{URL}`
 
-### Ê¾Àı
+### ç¤ºä¾‹
 - <https://cors.zme.ink/https://api.github.com>
 - <https://cors.zme.ink/http://nginx.org/download/nginx-1.16.1.tar.gz>
 
 ```js
-// ¿½±´µ½¿ØÖÆÌ¨ÔËĞĞ
+// æ‹·è´åˆ°æ§åˆ¶å°è¿è¡Œ
 var $url = "http://wthrcdn.etouch.cn/weather_mini?citykey=101040100";
 fetch("https://cors.zme.ink/" + $url).then(x => x.text()).then(console.log)
 ```
 
-### °²×°
-- ÎÄµµ£º<https://developers.cloudflare.com/workers/quickstart>
-- clone ÏîÄ¿
-- ±à¼­ `index.js` ºÍ `wrangler.toml` (ÅäÖÃÃÜÔ¿)
-- `wrangler build` ¹¹½¨
-- `wrangler publish` ·¢²¼
+---
 
-### Ì×²Í
-- Ã¿Ìì 10 Íò¸öÇëÇó£¨UTC + 0£©
-- Ã¿ 10 ·ÖÖÓ 1000 ¸öÇëÇó
-- Ã¿¸öÇëÇó×î¶à10ms CPUÊ±¼ä
-- Ê×´ÎÇëÇóºóµÄ×îµÍÑÓ³Ù
+## â¤ raw
+GitHub ä»“åº“å†…å®¹ç›´æ¥æµè§ˆï¼Œæ›¿æ¢ `raw.githubusercontent.com`  
+å¤„ç† svgã€jsã€css è¾“å‡ºçš„ `Content-Type`
+
+### æ¥å£
+- `Host/{name}/{repos}/{branch}/{path}`
+- æ›¿æ¢ `githubusercontent.com` ä¸º `zme.ink`
+
+### ç¤ºä¾‹
+- <https://raw.githubusercontent.com/netnr/static/master/favicon.svg>
+- <https://raw.zme.ink/netnr/static/master/favicon.svg>
+
+---
+
+### å®‰è£…
+- clone é¡¹ç›®ï¼Œè¿›å…¥å­ç›®å½•ï¼ˆä»£è¡¨ä¸€ä¸ª workerï¼‰
+- ç¼–è¾‘ `index.js` å’Œ `wrangler.toml` (é…ç½®å¯†é’¥)
+- `wrangler build` æ„å»º
+- `wrangler publish` å‘å¸ƒ
+- è¯¦ç»†æ–‡æ¡£ï¼š<https://developers.cloudflare.com/workers/quickstart>
+
+### å¥—é¤
+ CPU | æ—¥è¯·æ±‚ | çªå‘é€Ÿç‡ | è„šæœ¬å¤§å° 
+ ---- | ---- | ---- | ---- 
+ 10ms | 100,000 | 10åˆ†é’Ÿ1000ä¸ªè¯·æ±‚ | å‹ç¼©å1M
+
+è¯¦æƒ…ï¼šhttps://developers.cloudflare.com/workers/about/limits/
 
 ### Source
 - <https://github.com/netnr/workers>
