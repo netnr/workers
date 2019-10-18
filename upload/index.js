@@ -37,7 +37,7 @@ async function handleRequest(request) {
     try {
 
         //接收
-        let tip = [], or, filename, ext, file, content;
+        let tip = [], or, filename, pathname, ext, file, content;
 
         if (request.method == "POST") {
 
@@ -45,8 +45,10 @@ async function handleRequest(request) {
 
             //仓库
             or = rb["or"] || "";
-            //名称
+            //文件名
             filename = (rb["name"] || "").trim().replace(/\//g, '');
+            //自定义路径及名称
+            pathname = (rb["name"] || "").trim();
             //格式
             ext = "." + filename.split('.')[1];
             //文件
@@ -80,8 +82,10 @@ async function handleRequest(request) {
             //（UTC + 08:00）北京时间
             let now = new Date(Date.now() + 8 * 3600 * 1000).toISOString().replace('Z', '');
 
-            //新的文件名
-            let pathname = now.replace(/-/g, '/').replace('T', '/').replace(/:/g, '').replace('.', '') + Math.random().toString().slice(-1);
+            //路径及名称
+            if (pathname == "") {
+                pathname = now.replace(/-/g, '/').replace('T', '/').replace(/:/g, '').replace('.', '') + Math.random().toString().slice(-1);
+            }
 
             //完整链接
             let uri = "https://api.github.com/repos/" + or + "/contents/" + pathname + ext;
