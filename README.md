@@ -34,9 +34,28 @@ GitHub 仓库内容直接浏览，替换 `raw.githubusercontent.com`
 
 ---
 
+## ❤ upload
+基于 Token 授权上传（可限制格式的）文件到（白名单）GitHub仓库
+
+### 接口
+- `upload.zme.ink`
+- `POST`请求，参数：
+
+```
+content: 文件base64编码
+or:{owner}/{repos}
+name:filename.jpg
+```
+
+### 示例
+- https://gs.netnr.com
+
+---
+
 ### 安装
 - clone 项目，进入子目录（代表一个 worker）
 - 编辑 `index.js` 和 `wrangler.toml` (配置密钥)
+- `wrangler config` 配置邮箱、密钥
 - `wrangler build` 构建
 - `wrangler publish` 发布
 - 详细文档：<https://developers.cloudflare.com/workers/quickstart>

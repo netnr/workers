@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "cors",
+  "name": "upload",
   "version": "1.0.0",
-  "description": "cors",
+  "description": "upload",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

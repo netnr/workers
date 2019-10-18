@@ -25,7 +25,7 @@ async function handleRequest(request) {
   var response;
 
   if (url == "") {
-    response = new Response('Host/{name}/{repos}/{branch}/{path}', {
+    response = new Response('Host/{owner}/{repos}/{branch}/{path}', {
       status: 200,
       headers: {
         "Content-Type": "text/html"
