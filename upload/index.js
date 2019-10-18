@@ -48,7 +48,7 @@ async function handleRequest(request) {
             //文件名
             filename = (rb["name"] || "").trim().replace(/\//g, '');
             //自定义路径及名称
-            pathname = (rb["name"] || "").trim();
+            pathname = (rb["pathname"] || "").trim();
             //格式
             ext = "." + filename.split('.')[1];
             //文件

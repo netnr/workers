@@ -43,8 +43,9 @@ GitHub 仓库内容直接浏览，替换 `raw.githubusercontent.com`
 
 ```
 content: 文件base64编码
-or:{owner}/{repos}
-name:filename.jpg
+or:{owner}/{repos} 账号/仓库
+name:filename.jpg 文件名
+pathname:（可选）自定义路径
 ```
 
 ### 示例
