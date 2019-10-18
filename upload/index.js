@@ -54,7 +54,7 @@ async function handleRequest(request) {
             //文件
             file = new Buffer(rb["file"]).toString('base64');
             //文件base64编码
-            content = rb["content"];
+            content = decodeURIComponent(rb["content"]);
 
             if (!YOUR_REPOS.includes(or)) {
                 tip.push("仅允许的仓库白名单：" + YOUR_REPOS.join())
