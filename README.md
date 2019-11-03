@@ -78,3 +78,13 @@ pathname:（可选）自定义路径
 
 ### Source
 - <https://github.com/netnr/workers>
+
+---
+
+### 通知
+
+额度顶不住了，使用量大请用自己的账号搭建服务吧，谢谢！！！
+
+![图片说明](https://static.netnr.com/2019/11/03/0752457693.png)
+
+如果你不想麻烦，也许你可以[赞助](https://ss.netnr.com/contact)我升级为付费用户 $5/month 1千万请求量，请备注来自 cfw
