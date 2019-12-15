@@ -1,10 +1,9 @@
 /*
  * https://github.com/netnr/workers
  * 
- * 2019-10-18
+ * 2019-12-16
  * netnr
  * 
- * 示例：https://gs.netnr.com
  */
 
 //public_repo 填写你的 TOKEN
@@ -40,21 +39,23 @@ async function handleRequest(request) {
         let tip = [], or, filename, pathname, ext, file, content;
 
         if (request.method == "POST") {
+            //参数
+            let sp = new URL(request.url).searchParams;
 
-            let rb = await readRequestBody(request);
+            console.log(sp.get("or"))
 
             //仓库
-            or = rb["or"] || "";
+            or = sp.get("or") || "";
             //文件名
-            filename = (rb["name"] || "").trim().replace(/\//g, '');
+            filename = (sp.get("name") || "").trim().replace(/\//g, '');
             //自定义路径及名称
-            pathname = (rb["pathname"] || "").trim();
+            pathname = (sp.get("pathname") || "").trim();
             //格式
             ext = "." + filename.split('.')[1];
-            //文件
-            file = new Buffer(rb["file"]).toString('base64');
-            //文件base64编码
-            content = decodeURIComponent(rb["content"]);
+
+            //文件binary转为base64编码
+            let buffer = await request.arrayBuffer();
+            content = await arrayBufferToBase64(buffer);
 
             if (!YOUR_REPOS.includes(or)) {
                 tip.push("仅允许的仓库白名单：" + YOUR_REPOS.join())
@@ -65,7 +66,7 @@ async function handleRequest(request) {
             if (ext == "" || LIMIT_EXT.includes(ext) || !ext.includes('.')) {
                 tip.push("文件格式错误或受限制的文件格式：" + LIMIT_EXT.join())
             }
-            if (file.length > MAX_SIZE * 1024 * 1024) {
+            if (buffer.byteLength > MAX_SIZE * 1024 * 1024) {
                 tip.push("最大文件限制 " + MAX_SIZE + " MB");
             }
         } else {
@@ -125,28 +126,14 @@ async function handleRequest(request) {
 }
 
 /**
- * 获取参数主体
- * @param {any} request
+ * buffer转成base64
  */
-async function readRequestBody(request) {
-    const { headers } = request
-    const contentType = headers.get('content-type')
-    if (contentType.includes('application/json')) {
-        return await request.json()
-    } else if (contentType.includes('application/text')) {
-        return await request.text()
-    } else if (contentType.includes('text/html')) {
-        return await request.text()
-    } else if (contentType.includes('form')) {
-        const formData = await request.formData()
-        let body = {}
-        for (let entry of formData.entries()) {
-            body[entry[0]] = entry[1]
-        }
-        return body
-    } else {
-        let myBlob = await request.blob()
-        var objectURL = URL.createObjectURL(myBlob)
-        return objectURL
+async function arrayBufferToBase64(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i += 1) {
+        binary += String.fromCharCode(bytes[i]);
     }
-}
+    return btoa(binary);
+};
