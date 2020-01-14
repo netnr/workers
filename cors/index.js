@@ -1,15 +1,13 @@
 /*
  * https://github.com/netnr/workers
  * 
- * 2019-10-12
+ * 2020-01-15
  * netnr
  */
 
-
 addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
+    event.respondWith(handleRequest(event.request))
 })
-
 
 /**
  * Respond to the request
@@ -17,45 +15,71 @@ addEventListener('fetch', event => {
  */
 async function handleRequest(request) {
 
-  //取域名第一个斜杠后的所有信息为代理链接
-  let url = request.url.substr(8);
-  url = url.substr(url.indexOf('/') + 1);
+    //请求头部、返回对象
+    let reqHeaders = new Headers(request.headers),
+        outBody, outStatus = 200, outCt = null, outHeaders = new Headers({
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": reqHeaders.get('Access-Control-Allow-Headers') || "Accept, Authorization, Cache-Control, Content-Type, DNT, If-Modified-Since, Keep-Alive, Origin, User-Agent, X-Requested-With, Token, x-access-token"
+        });
 
-  //返回对象
-  var response;
+    try {
+        //取域名第一个斜杠后的所有信息为代理链接
+        let url = request.url.substr(8);
+        url = url.substr(url.indexOf('/') + 1);
 
-  //需要忽略的代理
-  if (request.method == "OPTIONS" || url.length < 3 || url.indexOf('.') == -1 || url == "favicon.ico" || url == "robots.txt") {
-    //输出提示
-    var htm = [];
-    htm.push("Usage：Host/{URL}");
-    htm.push("Source：https://github.com/netnr/workers");
+        //需要忽略的代理
+        if (request.method == "OPTIONS" || url.length < 3 || url.indexOf('.') == -1 || url == "favicon.ico" || url == "robots.txt") {
+            //输出提示
+            outBody = JSON.stringify([
+                "Usage：Host/{URL}",
+                "Source：https://github.com/netnr/workers"
+            ]);
+            outCt = "application/json";
+        } else {
+            //补上前缀 http://
+            if (url.toLowerCase().indexOf("http") == -1) {
+                url = "http://" + url;
+            }
 
-    response = new Response(htm.join('\n\n'), { status: 200 });
-  } else {
+            let fp = {
+                method: request.method
+            }
 
-    //补上前缀 http://
-    if (url.toLowerCase().indexOf("http") == -1) {
-      url = "http://" + url;
+            // 是否带 body
+            let fb = null;
+            if (["POST", "PUT", "PATCH", "DELETE"].indexOf(request.method) >= 0) {
+                const ct = (reqHeaders.get('content-type') || "").toLowerCase();
+                if (ct.includes('application/json')) {
+                    fp.body = JSON.stringify(await request.json());
+                } else if (ct.includes('application/text') || ct.includes('text/html')) {
+                    fp.body = await request.text();
+                } else if (ct.includes('form')) {
+                    fp.body = await request.formData();
+                } else {
+                    fp.body = await request.blob();
+                }
+            }
+
+            // 发起 fetch
+            let fr = (await fetch(url, fp));
+            outCt = fr.headers.get('content-type');
+            outBody = fr.body;
+        }
+    } catch (err) {
+        outCt = "application/json";
+        outBody = JSON.stringify(err.stack) || err;
     }
 
-    //发起 fetch
-    response = await fetch(url, {
-      method: request.method,
-      headers: request.headers
-    });
-  }
+    //设置类型
+    if (outCt && outCt != "") {
+        outHeaders.set("content-type", outCt);
+    }
 
-  //添加跨域头
-  var myHeaders = new Headers(response.headers);
-  myHeaders.set("Access-Control-Allow-Origin", "*");
-  myHeaders.set("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");
-  myHeaders.set("Access-Control-Allow-Headers", "*");
+    return new Response(outBody, {
+        status: outStatus,
+        headers: outHeaders
+    })
 
-  return new Response(response.body, {
-    status: response.status,
-    headers: myHeaders
-  })
-
-  // return new Response('OK', { status: 200 })
+    // return new Response('OK', { status: 200 })
 }
