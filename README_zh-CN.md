@@ -1,4 +1,4 @@
-﻿[English](README.md) | [简体中文](README_zh-CN.md)
+﻿[English](README.md) | 简体中文
 
 # Cloudflare Workers
 
@@ -82,6 +82,6 @@ pathname:（可选）自定义路径
 
 额度顶不住了，使用量大请用自己的账号搭建服务吧，谢谢！！！
 
-![图片说明](https://static.netnr.com/2019/11/03/0752457693.png)
+![溢出](https://s1.zme.ink/2019/11/03/0752457693.png)
 
-如果你不想麻烦，也许你可以[赞助](https://ss.netnr.com/contact)我升级为付费用户 $5/month 1千万请求量，请备注来自 cfw
+如果你不想麻烦，也许你可以[赞助](https://zme.ink)我升级为付费用户 $5/month 1千万请求量，请备注来自 cfw
