@@ -1,7 +1,7 @@
 /*
  * https://github.com/netnr/workers
  * 
- * 2020-06-22
+ * 2020-08-27
  * netnr
  */
 
@@ -17,7 +17,7 @@ async function handleRequest(request) {
 
     //请求头部、返回对象
     let reqHeaders = new Headers(request.headers),
-        outBody, outStatus = 200, outCt = null, outHeaders = new Headers({
+        outBody, outStatus = 200, outStatusText = 'OK', outCt = null, outHeaders = new Headers({
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
             "Access-Control-Allow-Headers": reqHeaders.get('Access-Control-Allow-Headers') || "Accept, Authorization, Cache-Control, Content-Type, DNT, If-Modified-Since, Keep-Alive, Origin, User-Agent, X-Requested-With, Token, x-access-token"
@@ -74,6 +74,8 @@ async function handleRequest(request) {
             // 发起 fetch
             let fr = (await fetch(url, fp));
             outCt = fr.headers.get('content-type');
+            outStatus = fr.status;
+            outStatusText = fr.statusText;
             outBody = fr.body;
         }
     } catch (err) {
@@ -91,6 +93,7 @@ async function handleRequest(request) {
 
     return new Response(outBody, {
         status: outStatus,
+        statusText: outStatusText,
         headers: outHeaders
     })
 
