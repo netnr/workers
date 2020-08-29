@@ -36,28 +36,6 @@ GitHub 仓库内容直接浏览，替换 `raw.githubusercontent.com`
 
 ---
 
-## ❤ upload
-基于 Token 授权上传（可限制格式的）文件到（白名单）GitHub仓库
-
-### 接口
-- `upload.zme.ink`
-- `POST`请求，参数：
-
-```
-// 二进制的流的方式发送文件，整个上传内容都为文件内容， 其他参数在URL上
-binary
-
-// url 参数
-or:{owner}/{repos} 账号/仓库
-name:filename.jpg 文件名
-pathname:（可选）自定义路径
-```
-
-### 示例
-- https://gs.netnr.com
-
----
-
 ### 安装
 - clone 项目，进入子目录（代表一个 worker）
 - 编辑 `index.js` 和 `wrangler.toml` (配置密钥)

@@ -36,28 +36,6 @@ Handle `Content-Type` output by svg, js, css
 
 ---
 
-## ❤ upload
-Upload files to the GitHub repository based on Token authorization
-
-### Interface
-- `upload.zme.ink`
-- `POST` request, parameters:
-
-```
-// The file is sent in a binary stream, the entire upload content is the file content, and other parameters are on the URL
-binary
-
-// url parameters
-or:{owner}/{repos}
-name:filename.jpg
-pathname:(Optional) Custom path
-```
-
-### Demo
-- https://gs.netnr.com
-
----
-
 ### Install
 - clone the project and enter the subdirectory (representing a worker)
 - Edit `index.js` and `wrangler.toml` (configuration key)

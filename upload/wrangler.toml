@@ -1,6 +1,0 @@
-account_id = "454a781d3f76fc267a2c87da904f46cf"
-name = "upload"
-type = "webpack"
-route = "upload.zme.ink/*"
-workers_dev = false
-zone_id = "fc6af23e5a5a950be54defd75236a84d"
