@@ -2,39 +2,26 @@
 
 # Cloudflare Workers
 
+> # 2020-12-11 Cloudflare banned zme.ink
+> https://netnr-proxy.openode.io/
+
 ## ❤ cors
 Support cross-domain request  
 Convert HTTP to HTTPS
 
 ### Interface
 - `Host/{URL}`
-- `https://cors.zme.ink/{URL}`
+- `https://cors.netnr.workers.dev/{URL}`
 
 ### Demo
-- <https://cors.zme.ink/https://api.github.com>
-- <https://cors.zme.ink/http://nginx.org/download/nginx-1.16.1.tar.gz>
+- <https://cors.netnr.workers.dev/https://api.github.com>
+- <https://cors.netnr.workers.dev/http://nginx.org/download/nginx-1.16.1.tar.gz>
 
 ```js
 // Copy to the console and run
 var $url = "http://wthrcdn.etouch.cn/weather_mini?citykey=101040100";
-fetch("https://cors.zme.ink/" + $url).then(x => x.text()).then(console.log)
+fetch("https://cors.netnr.workers.dev/" + $url).then(x => x.text()).then(console.log)
 ```
-
----
-
-## ❤ raw
-Browse the contents of the GitHub repository directly, replacing `raw.githubusercontent.com`  
-Handle `Content-Type` output by svg, js, css
-
-### Interface
-- `Host/{name}/{repos}/{branch}/{path}`
-- Replace `githubusercontent.com` with `zme.ink`
-
-### Demo
-- <https://raw.githubusercontent.com/netnr/static/master/favicon.svg>
-- <https://raw.zme.ink/netnr/static/master/favicon.svg>
-
----
 
 ### Install
 - clone the project and enter the subdirectory (representing a worker)

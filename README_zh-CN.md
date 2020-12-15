@@ -2,39 +2,26 @@
 
 # Cloudflare Workers
 
+> # 2020-12-11 Cloudflare 永久封禁 zme.ink （恶意请求被投诉）
+> https://netnr-proxy.openode.io/
+
 ## ❤ cors
 支持跨域请求（转换不支持跨域请求的接口），可直接发起 ajax、fetch  
 支持HTTPS（解决远程数据接口不支持HTTPS）
 
 ### 接口
 - `Host/{URL}`
-- `https://cors.zme.ink/{URL}`
+- `https://cors.netnr.workers.dev/{URL}`
 
 ### 示例
-- <https://cors.zme.ink/https://api.github.com>
-- <https://cors.zme.ink/http://nginx.org/download/nginx-1.16.1.tar.gz>
+- <https://cors.netnr.workers.dev/https://api.github.com>
+- <https://cors.netnr.workers.dev/http://nginx.org/download/nginx-1.16.1.tar.gz>
 
 ```js
 // 拷贝到控制台运行
 var $url = "http://wthrcdn.etouch.cn/weather_mini?citykey=101040100";
-fetch("https://cors.zme.ink/" + $url).then(x => x.text()).then(console.log)
+fetch("https://cors.netnr.workers.dev/" + $url).then(x => x.text()).then(console.log)
 ```
-
----
-
-## ❤ raw
-GitHub 仓库内容直接浏览，替换 `raw.githubusercontent.com`  
-处理 svg、js、css 输出的 `Content-Type`
-
-### 接口
-- `Host/{name}/{repos}/{branch}/{path}`
-- 替换 `githubusercontent.com` 为 `zme.ink`
-
-### 示例
-- <https://raw.githubusercontent.com/netnr/static/master/favicon.svg>
-- <https://raw.zme.ink/netnr/static/master/favicon.svg>
-
----
 
 ### 安装
 - clone 项目，进入子目录（代表一个 worker）
