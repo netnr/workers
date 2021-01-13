@@ -1,6 +1,6 @@
 account_id = "454a781d3f76fc267a2c87da904f46cf"
 name = "cors"
 type = "webpack"
-route = "cors.zme.ink/*"
+route = "cors.eu.org/*"
 workers_dev = false
-zone_id = "fc6af23e5a5a950be54defd75236a84d"
+zone_id = "c026ed83583885087a863bf454b68a69"
