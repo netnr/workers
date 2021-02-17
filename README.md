@@ -3,7 +3,7 @@
 # Cloudflare Workers
 
 > # 2020-12-11 Cloudflare banned zme.ink
-> https://netnr-proxy.openode.io/
+> https://cors.netnr.workers.dev
 
 ## ❤ cors
 Support cross-domain request  
@@ -46,6 +46,6 @@ Details: https://developers.cloudflare.com/workers/about/limits/
 ### Notice
 The amount can't hold up, please use your account to build the service if you use a lot, thank you! ! !
 
-![overflow](https://s1.zme.ink/2019/11/03/0752457693.png)
+![overflow](https://cdn.jsdelivr.net/gh/netnr/static/2019/11/03/0752457693.png)
 
 If you don’t want to trouble, maybe you can [sponsor](https://zme.ink) I upgrade to a paid user $5/month 10 million requests, please note from cfw

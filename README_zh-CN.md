@@ -3,7 +3,7 @@
 # Cloudflare Workers
 
 > # 2020-12-11 Cloudflare 永久封禁 zme.ink （恶意请求被投诉）
-> https://netnr-proxy.openode.io/
+> https://cors.netnr.workers.dev
 
 ## ❤ cors
 支持跨域请求（转换不支持跨域请求的接口），可直接发起 ajax、fetch  
@@ -47,6 +47,6 @@ fetch("https://cors.netnr.workers.dev/" + $url).then(x => x.text()).then(console
 
 额度顶不住了，使用量大请用自己的账号搭建服务吧，谢谢！！！
 
-![溢出](https://s1.zme.ink/2019/11/03/0752457693.png)
+![溢出](https://cdn.jsdelivr.net/gh/netnr/static/2019/11/03/0752457693.png)
 
 如果你不想麻烦，也许你可以[赞助](https://zme.ink)我升级为付费用户 $5/month 1千万请求量，请备注来自 cfw
