@@ -1,7 +1,7 @@
 /*
  * https://github.com/netnr/workers
  * 
- * 2020-08-27
+ * 2021-02-21
  * netnr
  */
 
@@ -37,7 +37,16 @@ async function handleRequest(request) {
                 source: 'https://github.com/netnr/workers'
             });
             outCt = "application/json";
-        } else {
+        }
+        //阻断
+        else if (url.toLowerCase().includes(".m3u8")) {
+            outBody = JSON.stringify({
+                code: 415,
+                msg: 'The keyword ".m3u8" was blacklisted by the operator of this proxy.'
+            });
+            outCt = "application/json";
+        }
+        else {
             //补上前缀 http://
             if (url.toLowerCase().indexOf("http") == -1) {
                 url = "http://" + url;
