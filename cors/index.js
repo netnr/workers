@@ -1,19 +1,22 @@
 /*
  * https://github.com/netnr/workers
- * 
- * 2021-02-21
+ *
+ * 2019-10-12 - 2021-03-08
  * netnr
  */
 
 addEventListener('fetch', event => {
-    event.respondWith(handleRequest(event.request))
+    event.passThroughOnException()
+
+    event.respondWith(handleRequest(event))
 })
 
 /**
  * Respond to the request
  * @param {Request} request
  */
-async function handleRequest(request) {
+async function handleRequest(event) {
+    const { request } = event;
 
     //请求头部、返回对象
     let reqHeaders = new Headers(request.headers),
@@ -100,11 +103,99 @@ async function handleRequest(request) {
         outHeaders.set("content-type", outCt);
     }
 
-    return new Response(outBody, {
+    let response = new Response(outBody, {
         status: outStatus,
         statusText: outStatusText,
         headers: outHeaders
     })
 
+    //输出日志（从 https://logflare.app/ 申请并修改密钥后可取消注释）
+    //logflare.add(event, logflare.buildBody(request, response));
+
+    return response;
+
     // return new Response('OK', { status: 200 })
 }
+
+/**日志 */
+const logflare = {
+
+    /** 从 https://logflare.app/ 申请并改为自己的密钥 */
+    config: {
+        sourceKey: "7e4493f8-0275-4725-8d05-8b46e134098d",
+        apiKey: "MC96pX5DvmMs"
+    },
+
+    /**
+     * 头转object
+     * @param {any} headers
+     */
+    headersToObj: headers => {
+        const obj = {}
+        Array.from(headers).forEach(([key, value]) => {
+            obj[key.replace(/-/g, "_")] = value
+        })
+        return obj
+    },
+
+    /**
+     * 构建日志输出
+     * @param {any} request
+     */
+    buildLogEntry: (request, response) => {
+        const uAgent = request.headers.get("user-agent")
+        const cIP = request.headers.get("cf-connecting-ip")
+        return `${request.method} | ${response.status} | ${cIP} | ${request.url} | ${uAgent}`;
+    },
+
+    /**
+     * 构建元数据
+     * @param {any} request
+     * @param {any} response
+     */
+    buildMetaData: (request, response) => {
+        return {
+            response: {
+                headers: logflare.headersToObj(response.headers),
+                status_code: response.status
+            },
+            request: {
+                url: request.url,
+                method: request.method,
+                headers: logflare.headersToObj(request.headers),
+                cf: request.cf,
+            }
+        }
+    },
+
+    /**
+     * 构建发送主体
+     * @param {any} request
+     * @param {any} response
+     */
+    buildBody: (request, response) => {
+
+        return {
+            method: "POST",
+            headers: {
+                "X-API-KEY": logflare.config.apiKey,
+                "Content-Type": "application/json",
+                "User-Agent": `Cloudflare Worker`
+            },
+            body: JSON.stringify({
+                source: logflare.config.sourceKey,
+                log_entry: logflare.buildLogEntry(request, response),
+                metadata: logflare.buildMetaData(request, response)
+            })
+        }
+    },
+
+    /**
+     * 添加
+     * @param {any} event
+     * @param {any} body
+     */
+    add: (event, body) => {
+        event.waitUntil(fetch("https://api.logflare.app/logs", body))
+    }
+};
