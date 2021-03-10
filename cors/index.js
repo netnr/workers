@@ -1,7 +1,7 @@
 /*
  * https://github.com/netnr/workers
  *
- * 2019-10-12 - 2021-03-08
+ * 2019-10-12 - 2021-03-10
  * netnr
  */
 
@@ -51,7 +51,7 @@ async function handleRequest(event) {
         }
         else {
             //补上前缀 http://
-            if (url.toLowerCase().indexOf("http") == -1) {
+            if (url.indexOf("://") == -1) {
                 url = "http://" + url;
             }
 
@@ -109,22 +109,21 @@ async function handleRequest(event) {
         headers: outHeaders
     })
 
-    //输出日志（从 https://logflare.app/ 申请并修改密钥后可取消注释）
-    //logflare.add(event, logflare.buildBody(request, response));
+    //日志接口（申请自己的应用修改密钥后可取消注释）
+    //sematext.add(event, request, response);
 
     return response;
 
     // return new Response('OK', { status: 200 })
 }
 
-/**日志 */
-const logflare = {
+/**
+ * 日志
+ */
+const sematext = {
 
-    /** 从 https://logflare.app/ 申请并改为自己的密钥 */
-    config: {
-        sourceKey: "7e4493f8-0275-4725-8d05-8b46e134098d",
-        apiKey: "MC96pX5DvmMs"
-    },
+    /**接口（从 https://sematext.com/ 申请并修改密钥） */
+    api: "https://logsene-receiver.sematext.com/c7cb059a-4a50-4ceb-baeb-da27adb528bb/example/",
 
     /**
      * 头转object
@@ -139,63 +138,55 @@ const logflare = {
     },
 
     /**
-     * 构建日志输出
-     * @param {any} request
-     */
-    buildLogEntry: (request, response) => {
-        const uAgent = request.headers.get("user-agent")
-        const cIP = request.headers.get("cf-connecting-ip")
-        return `${request.method} | ${response.status} | ${cIP} | ${request.url} | ${uAgent}`;
-    },
-
-    /**
-     * 构建元数据
-     * @param {any} request
-     * @param {any} response
-     */
-    buildMetaData: (request, response) => {
-        return {
-            response: {
-                headers: logflare.headersToObj(response.headers),
-                status_code: response.status
-            },
-            request: {
-                url: request.url,
-                method: request.method,
-                headers: logflare.headersToObj(request.headers),
-                cf: request.cf,
-            }
-        }
-    },
-
-    /**
      * 构建发送主体
      * @param {any} request
      * @param {any} response
      */
     buildBody: (request, response) => {
 
+        const hua = request.headers.get("user-agent")
+        const hip = request.headers.get("cf-connecting-ip")
+        const hrf = request.headers.get("referer")
+        const url = new URL(request.url)
+
+        const body = {
+            method: request.method,
+            statusCode: response.status,
+            clientIp: hip,
+            referer: hrf,
+            userAgent: hua,
+            host: url.host,
+            path: url.pathname,
+            proxyHost: null,
+            proxyHeader: sematext.headersToObj(request.headers),
+            cf: request.cf
+        }
+
+        if (body.path.includes(".") && body.path != "/" && !body.path.includes("favicon.ico")) {
+            try {
+                let purl = decodeURIComponent(body.path.substr(1));
+                if (purl.indexOf("://") == -1) {
+                    purl = "http://" + purl;
+                }
+                body.path = purl;
+                body.proxyHost = new URL(purl).host;
+            } catch { }
+        }
+
         return {
             method: "POST",
-            headers: {
-                "X-API-KEY": logflare.config.apiKey,
-                "Content-Type": "application/json",
-                "User-Agent": `Cloudflare Worker`
-            },
-            body: JSON.stringify({
-                source: logflare.config.sourceKey,
-                log_entry: logflare.buildLogEntry(request, response),
-                metadata: logflare.buildMetaData(request, response)
-            })
+            body: JSON.stringify(body)
         }
     },
 
     /**
      * 添加
      * @param {any} event
-     * @param {any} body
+     * @param {any} request
+     * @param {any} response
      */
-    add: (event, body) => {
-        event.waitUntil(fetch("https://api.logflare.app/logs", body))
+    add: (event, request, response) => {
+        const body = sematext.buildBody(request, response);
+        event.waitUntil(fetch(sematext.api, body))
     }
 };
