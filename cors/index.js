@@ -42,10 +42,10 @@ async function handleRequest(event) {
             outCt = "application/json";
         }
         //阻断
-        else if (url.toLowerCase().includes(".m3u8")) {
+        else if (blocker.check(url)) {
             outBody = JSON.stringify({
                 code: 415,
-                msg: 'The keyword ".m3u8" was blacklisted by the operator of this proxy.'
+                msg: 'The keyword "' + blocker.keys.join(' , ') + '" was blacklisted by the operator of this proxy.'
             });
             outCt = "application/json";
         }
@@ -115,6 +115,18 @@ async function handleRequest(event) {
     return response;
 
     // return new Response('OK', { status: 200 })
+}
+
+/**
+ * 阻断器
+ */
+const blocker = {
+    keys: [".m3u8", ".ts", ".acc", ".m4s", "photocall.tv", "googlevideo.com"],
+    check: function (url) {
+        url = url.toLowerCase();
+        let len = blocker.keys.filter(x => url.includes(x)).length;
+        return len != 0;
+    }
 }
 
 /**
