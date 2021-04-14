@@ -3,7 +3,7 @@
 # Cloudflare Workers
 
 > # 2020-12-11 Cloudflare 永久封禁 zme.ink （恶意请求被投诉）
-> https://cors.netnr.workers.dev
+> https://cors.eu.org
 
 ## ❤ cors
 支持跨域请求（转换不支持跨域请求的接口），可直接发起 ajax、fetch  
@@ -11,16 +11,16 @@
 
 ### 接口
 - `Host/{URL}`
-- `https://cors.netnr.workers.dev/{URL}`
+- `https://cors.eu.org/{URL}`
 
 ### 示例
-- <https://cors.netnr.workers.dev/https://api.github.com>
-- <https://cors.netnr.workers.dev/http://nginx.org/download/nginx-1.16.1.tar.gz>
+- <https://cors.eu.org/https://api.github.com>
+- <https://cors.eu.org/http://nginx.org/download/nginx-1.16.1.tar.gz>
 
 ```js
 // 拷贝到控制台运行
 var $url = "http://wthrcdn.etouch.cn/weather_mini?citykey=101040100";
-fetch("https://cors.netnr.workers.dev/" + $url).then(x => x.text()).then(console.log)
+fetch("https://cors.eu.org/" + $url).then(x => x.text()).then(console.log)
 ```
 
 ### 安装

@@ -3,7 +3,7 @@
 # Cloudflare Workers
 
 > # 2020-12-11 Cloudflare banned zme.ink
-> https://cors.netnr.workers.dev
+> https://cors.eu.org
 
 ## ❤ cors
 Support cross-domain request  
@@ -11,16 +11,16 @@ Convert HTTP to HTTPS
 
 ### Interface
 - `Host/{URL}`
-- `https://cors.netnr.workers.dev/{URL}`
+- `https://cors.eu.org/{URL}`
 
 ### Demo
-- <https://cors.netnr.workers.dev/https://api.github.com>
-- <https://cors.netnr.workers.dev/http://nginx.org/download/nginx-1.16.1.tar.gz>
+- <https://cors.eu.org/https://api.github.com>
+- <https://cors.eu.org/http://nginx.org/download/nginx-1.16.1.tar.gz>
 
 ```js
 // Copy to the console and run
 var $url = "http://wthrcdn.etouch.cn/weather_mini?citykey=101040100";
-fetch("https://cors.netnr.workers.dev/" + $url).then(x => x.text()).then(console.log)
+fetch("https://cors.eu.org/" + $url).then(x => x.text()).then(console.log)
 ```
 
 ### Install

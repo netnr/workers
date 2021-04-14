@@ -1,7 +1,7 @@
 /*
  * https://github.com/netnr/workers
  *
- * 2019-10-12 - 2021-03-10
+ * 2019-10-12 - 2021-04-14
  * netnr
  */
 
@@ -135,7 +135,7 @@ const blocker = {
 const sematext = {
 
     /**接口（从 https://sematext.com/ 申请并修改密钥） */
-    api: "https://logsene-receiver.sematext.com/c7cb059a-4a50-4ceb-baeb-da27adb528bb/example/",
+    api: "https://logsene-receiver.sematext.com/1d42b6b1-ccfb-4e53-8a89-7a0437f68a8a/example/",
 
     /**
      * 头转object
