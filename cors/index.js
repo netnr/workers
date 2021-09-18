@@ -1,7 +1,7 @@
 /*
  * https://github.com/netnr/workers
  *
- * 2019-10-12 - 2021-04-14
+ * 2019-10-12 - 2021-09-18
  * netnr
  */
 
@@ -110,7 +110,7 @@ async function handleRequest(event) {
     })
 
     //日志接口（申请自己的应用修改密钥后可取消注释）
-    //sematext.add(event, request, response);
+    sematext.add(event, request, response);
 
     return response;
 
@@ -121,7 +121,7 @@ async function handleRequest(event) {
  * 阻断器
  */
 const blocker = {
-    keys: [".m3u8", ".ts", ".acc", ".m4s", "photocall.tv", "googlevideo.com"],
+    keys: [".m3u8", ".ts", ".acc", ".m4s", "photocall.tv", "googlevideo.com", "liveradio.ie"],
     check: function (url) {
         url = url.toLowerCase();
         let len = blocker.keys.filter(x => url.includes(x)).length;
@@ -202,3 +202,4 @@ const sematext = {
         event.waitUntil(fetch(sematext.api, body))
     }
 };
+
