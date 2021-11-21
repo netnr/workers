@@ -202,3 +202,4 @@ const sematext = {
         event.waitUntil(fetch(sematext.api, body))
     }
 };
+
