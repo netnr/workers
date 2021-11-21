@@ -1,11 +1,6 @@
 ﻿English | [简体中文](README_zh-CN.md)
 
-# Cloudflare Workers
-
-> # 2020-12-11 Cloudflare banned zme.ink
-> https://cors.eu.org
-
-## ❤ cors
+## ❤ cors (Cloudflare Workers)
 Support cross-domain request  
 Convert HTTP to HTTPS
 
@@ -46,6 +41,4 @@ Details: https://developers.cloudflare.com/workers/about/limits/
 ### Notice
 The amount can't hold up, please use your account to build the service if you use a lot, thank you! ! !
 
-![overflow](https://cdn.jsdelivr.net/gh/netnr/static/2019/11/03/0752457693.png)
-
-If you don’t want to trouble, maybe you can [sponsor](https://zme.ink) I upgrade to a paid user $5/month 10 million requests, please note from cfw
+![overflow](https://s1.netnr.eu.org/2019/11/03/0752457693.png)

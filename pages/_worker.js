@@ -1,23 +1,14 @@
-/*
- * https://github.com/netnr/workers
- *
- * 2019-10-12 - 2021-09-18
- * netnr
- */
-
-addEventListener('fetch', event => {
-    event.passThroughOnException()
-
-    event.respondWith(handleRequest(event))
-})
+export default {
+    async fetch(request, _env) {
+        return await handleRequest(request);
+    }
+}
 
 /**
  * Respond to the request
  * @param {Request} request
  */
-async function handleRequest(event) {
-    const { request } = event;
-
+async function handleRequest(request) {
     //请求头部、返回对象
     let reqHeaders = new Headers(request.headers),
         outBody, outStatus = 200, outStatusText = 'OK', outCt = null, outHeaders = new Headers({
@@ -45,7 +36,7 @@ async function handleRequest(event) {
         else if (blocker.check(url)) {
             outBody = JSON.stringify({
                 code: 415,
-                msg: 'The keyword: ' + blocker.keys.join(' , ') + ' was blocklisted by the operator of this proxy.'
+                msg: 'The keyword "' + blocker.keys.join(' , ') + '" was blacklisted by the operator of this proxy.'
             });
             outCt = "application/json";
         }
@@ -84,7 +75,7 @@ async function handleRequest(event) {
             }
 
             // 发起 fetch
-            let fr = (await fetch(url, fp));
+            let fr = await fetch(url, fp);
             outCt = fr.headers.get('content-type');
             outStatus = fr.status;
             outStatusText = fr.statusText;
@@ -110,7 +101,7 @@ async function handleRequest(event) {
     })
 
     //日志接口（申请自己的应用修改密钥后可取消注释）
-    sematext.add(event, request, response);
+    //sematext.add(event, request, response);
 
     return response;
 
