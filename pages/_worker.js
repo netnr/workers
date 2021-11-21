@@ -75,7 +75,7 @@ async function handleRequest(request) {
             }
 
             // 发起 fetch
-            let fr = await fetch(url, fp);
+            let fr = (await fetch(url, fp));
             outCt = fr.headers.get('content-type');
             outStatus = fr.status;
             outStatusText = fr.statusText;
@@ -100,9 +100,6 @@ async function handleRequest(request) {
         headers: outHeaders
     })
 
-    //日志接口（申请自己的应用修改密钥后可取消注释）
-    //sematext.add(event, request, response);
-
     return response;
 
     // return new Response('OK', { status: 200 })
@@ -119,77 +116,3 @@ const blocker = {
         return len != 0;
     }
 }
-
-/**
- * 日志
- */
-const sematext = {
-
-    /**接口（从 https://sematext.com/ 申请并修改密钥） */
-    api: "https://logsene-receiver.sematext.com/1d42b6b1-ccfb-4e53-8a89-7a0437f68a8a/example/",
-
-    /**
-     * 头转object
-     * @param {any} headers
-     */
-    headersToObj: headers => {
-        const obj = {}
-        Array.from(headers).forEach(([key, value]) => {
-            obj[key.replace(/-/g, "_")] = value
-        })
-        return obj
-    },
-
-    /**
-     * 构建发送主体
-     * @param {any} request
-     * @param {any} response
-     */
-    buildBody: (request, response) => {
-
-        const hua = request.headers.get("user-agent")
-        const hip = request.headers.get("cf-connecting-ip")
-        const hrf = request.headers.get("referer")
-        const url = new URL(request.url)
-
-        const body = {
-            method: request.method,
-            statusCode: response.status,
-            clientIp: hip,
-            referer: hrf,
-            userAgent: hua,
-            host: url.host,
-            path: url.pathname,
-            proxyHost: null,
-            proxyHeader: sematext.headersToObj(request.headers),
-            cf: request.cf
-        }
-
-        if (body.path.includes(".") && body.path != "/" && !body.path.includes("favicon.ico")) {
-            try {
-                let purl = decodeURIComponent(body.path.substr(1));
-                if (purl.indexOf("://") == -1) {
-                    purl = "http://" + purl;
-                }
-                body.path = purl;
-                body.proxyHost = new URL(purl).host;
-            } catch { }
-        }
-
-        return {
-            method: "POST",
-            body: JSON.stringify(body)
-        }
-    },
-
-    /**
-     * 添加
-     * @param {any} event
-     * @param {any} request
-     * @param {any} response
-     */
-    add: (event, request, response) => {
-        const body = sematext.buildBody(request, response);
-        event.waitUntil(fetch(sematext.api, body))
-    }
-};
