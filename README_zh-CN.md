@@ -46,7 +46,7 @@ fetch("https://cors.eu.org/" + $url).then(x => x.text()).then(console.log)
 ```
 npm install wrangler@beta # 安装
 npx wrangler pages dev --help # 查看帮助（nodejs version >= 16.x）
-npx wrangler pages dev ./pages # 运行 pages 目录
+npx wrangler pages dev ./ # 进入 pages 目录运行
 ```
 详细文档：<https://developers.cloudflare.com/pages/platform/functions>
 
