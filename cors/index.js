@@ -143,7 +143,7 @@ const blocker = {
 const sematext = {
 
     // 从 https://sematext.com/ 申请并修改密钥
-    token: "d6945da2-06af-46a3-b394-b862e44ac735",
+    token: "d6945da2-06af-46a3-b394-b862e44ac537",
 
     /**
      * 头转object
