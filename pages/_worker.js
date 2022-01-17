@@ -41,10 +41,7 @@ async function handleRequest(request) {
             outCt = "application/json";
         }
         else {
-            //补上前缀 http://
-            if (url.indexOf("://") == -1) {
-                url = "http://" + url;
-            }
+            url = fixUrl(url);
 
             //构建 fetch 参数
             let fp = {
@@ -103,6 +100,17 @@ async function handleRequest(request) {
     return response;
 
     // return new Response('OK', { status: 200 })
+}
+
+// 补齐 url
+function fixUrl(url) {
+    if (url.includes("://")) {
+        return url;
+    } else if (url.includes(':/')) {
+        return url.replace(':/', '://');
+    } else {
+        return "http://" + url;
+    }
 }
 
 /**

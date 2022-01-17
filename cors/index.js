@@ -1,7 +1,7 @@
 /*
  * https://github.com/netnr/workers
  *
- * 2019-10-12 - 2021-09-18
+ * 2019-10-12 - 2022-01-17
  * netnr
  */
 
@@ -50,10 +50,7 @@ async function handleRequest(event) {
             outCt = "application/json";
         }
         else {
-            //补上前缀 http://
-            if (url.indexOf("://") == -1) {
-                url = "http://" + url;
-            }
+            url = fixUrl(url);
 
             //构建 fetch 参数
             let fp = {
@@ -117,6 +114,17 @@ async function handleRequest(event) {
     // return new Response('OK', { status: 200 })
 }
 
+// 补齐 url
+function fixUrl(url) {
+    if (url.includes("://")) {
+        return url;
+    } else if (url.includes(':/')) {
+        return url.replace(':/', '://');
+    } else {
+        return "http://" + url;
+    }
+}
+
 /**
  * 阻断器
  */
@@ -134,8 +142,8 @@ const blocker = {
  */
 const sematext = {
 
-    /**接口（从 https://sematext.com/ 申请并修改密钥） */
-    api: "https://logsene-receiver.sematext.com/1d42b6b1-ccfb-4e53-8a89-7a0437f68a8a/example/",
+    // 从 https://sematext.com/ 申请并修改密钥
+    token: "d6945da2-06af-46a3-b394-b862e44ac735",
 
     /**
      * 头转object
@@ -155,7 +163,6 @@ const sematext = {
      * @param {any} response
      */
     buildBody: (request, response) => {
-
         const hua = request.headers.get("user-agent")
         const hip = request.headers.get("cf-connecting-ip")
         const hrf = request.headers.get("referer")
@@ -170,16 +177,12 @@ const sematext = {
             host: url.host,
             path: url.pathname,
             proxyHost: null,
-            proxyHeader: sematext.headersToObj(request.headers),
-            cf: request.cf
         }
 
         if (body.path.includes(".") && body.path != "/" && !body.path.includes("favicon.ico")) {
             try {
-                let purl = decodeURIComponent(body.path.substr(1));
-                if (purl.indexOf("://") == -1) {
-                    purl = "http://" + purl;
-                }
+                let purl = fixUrl(decodeURIComponent(body.path.substring(1)));
+
                 body.path = purl;
                 body.proxyHost = new URL(purl).host;
             } catch { }
@@ -198,8 +201,9 @@ const sematext = {
      * @param {any} response
      */
     add: (event, request, response) => {
+        let url = `https://logsene-receiver.sematext.com/${sematext.token}/example/`;        
         const body = sematext.buildBody(request, response);
-        event.waitUntil(fetch(sematext.api, body))
+
+        event.waitUntil(fetch(url, body))
     }
 };
-
