@@ -1,5 +1,9 @@
 ﻿English | [简体中文](README_zh-CN.md)
 
+> ## Note: Block a large number of requests, please deploy yourself
+
+---
+
 ## 🧡 cors (Cloudflare Workers)
 Support cross-domain request  
 Convert HTTP to HTTPS
