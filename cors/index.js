@@ -34,20 +34,23 @@ async function handleRequest(event) {
         //需要忽略的代理
         if (request.method == "OPTIONS" || url.length < 3 || url.indexOf('.') == -1 || url == "favicon.ico" || url == "robots.txt") {
             //输出提示
+            const invalid = !(request.method == "OPTIONS" || url.length === 0)
             outBody = JSON.stringify({
-                code: 0,
+                code: invalid ? 400 : 0,
                 usage: 'Host/{URL}',
                 source: 'https://github.com/netnr/workers'
             });
             outCt = "application/json";
+            outStatus = invalid ? 400 : 200;
         }
         //阻断
         else if (blocker.check(url)) {
             outBody = JSON.stringify({
-                code: 415,
+                code: 403,
                 msg: 'The keyword: ' + blocker.keys.join(' , ') + ' was blocklisted by the operator of this proxy.'
             });
             outCt = "application/json";
+            outStatus = 403;
         }
         else {
             url = fixUrl(url);
@@ -93,6 +96,7 @@ async function handleRequest(event) {
             code: -1,
             msg: JSON.stringify(err.stack) || err
         });
+        outStatus = 500;
     }
 
     //设置类型
@@ -201,7 +205,7 @@ const sematext = {
      * @param {any} response
      */
     add: (event, request, response) => {
-        let url = `https://logsene-receiver.sematext.com/${sematext.token}/example/`;        
+        let url = `https://logsene-receiver.sematext.com/${sematext.token}/example/`;
         const body = sematext.buildBody(request, response);
 
         event.waitUntil(fetch(url, body))
