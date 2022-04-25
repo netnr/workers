@@ -15,8 +15,12 @@ addEventListener('fetch', event => {
  * Configurations
  */
 const config = {
-    sematext_token: "d6945da2-06af-46a3-b394-b862e44ac537", // 从 https://sematext.com/ 申请并修改令牌
-    dropReferer: false, // 是否丢弃请求中的 Referer，在目标网站应用防盗链时有用
+    // 从 https://sematext.com/ 申请并修改令牌
+    sematextToken: "d6945da2-06af-46a3-b394-b862e44ac537",
+    // 是否丢弃请求中的 Referer，在目标网站应用防盗链时有用
+    dropReferer: false,
+    // 黑名单，URL 中含有任何一个关键字都会被阻断
+    blockList: [".m3u8", ".ts", ".acc", ".m4s", "photocall.tv", "googlevideo.com", "liveradio.ie"],
 };
 
 /**
@@ -55,7 +59,7 @@ async function handleRequest(event) {
         else if (blocker.check(url)) {
             outBody = JSON.stringify({
                 code: 403,
-                msg: 'The keyword: ' + blocker.keys.join(' , ') + ' was blocklisted by the operator of this proxy.'
+                msg: 'The keyword: ' + config.blockList.join(' , ') + ' was block-listed by the operator of this proxy.'
             });
             outCt = "application/json";
             outStatus = 403;
@@ -144,10 +148,9 @@ function fixUrl(url) {
  * 阻断器
  */
 const blocker = {
-    keys: [".m3u8", ".ts", ".acc", ".m4s", "photocall.tv", "googlevideo.com", "liveradio.ie"],
     check: function (url) {
         url = url.toLowerCase();
-        let len = blocker.keys.filter(x => url.includes(x)).length;
+        let len = config.blockList.filter(x => url.includes(x)).length;
         return len != 0;
     }
 }
@@ -212,7 +215,7 @@ const sematext = {
      * @param {any} response
      */
     add: (event, request, response) => {
-        let url = `https://logsene-receiver.sematext.com/${config.sematext_token}/example/`;
+        let url = `https://logsene-receiver.sematext.com/${config.sematextToken}/example/`;
         const body = sematext.buildBody(request, response);
 
         event.waitUntil(fetch(url, body))
