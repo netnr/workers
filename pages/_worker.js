@@ -5,6 +5,13 @@ export default {
 }
 
 /**
+ * Configurations
+ */
+const config = {
+    dropReferer: false, // 是否丢弃请求中的 Referer，在目标网站应用防盗链时有用
+};
+
+/**
  * Respond to the request
  * @param {Request} request
  */
@@ -53,10 +60,13 @@ async function handleRequest(request) {
             }
 
             //保留头部其它信息
+            const dropHeaders = ['content-length', 'content-type', 'host'];
+            if (config.dropReferer) dropHeaders.push('referer');
             let he = reqHeaders.entries();
             for (let h of he) {
-                if (!['content-length', 'content-type', 'host'].includes(h[0])) {
-                    fp.headers[h[0]] = h[1];
+                const key = h[0], value = h[1];
+                if (!dropHeaders.includes(key)) {
+                    fp.headers[key] = value;
                 }
             }
 

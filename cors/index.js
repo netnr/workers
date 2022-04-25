@@ -12,6 +12,14 @@ addEventListener('fetch', event => {
 })
 
 /**
+ * Configurations
+ */
+const config = {
+    sematext_token: "d6945da2-06af-46a3-b394-b862e44ac537", // 从 https://sematext.com/ 申请并修改令牌
+    dropReferer: false, // 是否丢弃请求中的 Referer，在目标网站应用防盗链时有用
+};
+
+/**
  * Respond to the request
  * @param {Request} request
  */
@@ -62,10 +70,13 @@ async function handleRequest(event) {
             }
 
             //保留头部其它信息
+            const dropHeaders = ['content-length', 'content-type', 'host'];
+            if (config.dropReferer) dropHeaders.push('referer');
             let he = reqHeaders.entries();
             for (let h of he) {
-                if (!['content-length', 'content-type', 'host'].includes(h[0])) {
-                    fp.headers[h[0]] = h[1];
+                const key = h[0], value = h[1];
+                if (!dropHeaders.includes(key)) {
+                    fp.headers[key] = value;
                 }
             }
 
@@ -110,7 +121,7 @@ async function handleRequest(event) {
         headers: outHeaders
     })
 
-    //日志接口（申请自己的应用修改密钥后可取消注释）
+    //日志接口（申请自己的应用修改令牌后可取消注释）
     sematext.add(event, request, response);
 
     return response;
@@ -145,10 +156,6 @@ const blocker = {
  * 日志
  */
 const sematext = {
-
-    // 从 https://sematext.com/ 申请并修改密钥
-    token: "d6945da2-06af-46a3-b394-b862e44ac537",
-
     /**
      * 头转object
      * @param {any} headers
@@ -205,7 +212,7 @@ const sematext = {
      * @param {any} response
      */
     add: (event, request, response) => {
-        let url = `https://logsene-receiver.sematext.com/${sematext.token}/example/`;
+        let url = `https://logsene-receiver.sematext.com/${config.sematext_token}/example/`;
         const body = sematext.buildBody(request, response);
 
         event.waitUntil(fetch(url, body))
