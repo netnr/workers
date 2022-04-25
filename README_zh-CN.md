@@ -20,13 +20,26 @@ var $url = "http://wthrcdn.etouch.cn/weather_mini?citykey=101040100";
 fetch("https://cors.eu.org/" + $url).then(x => x.text()).then(console.log)
 ```
 
-### 安装
+### 部署
+
+> 两种方法的工作原理一致
+
+#### wrangler
 - clone 项目，进入 cors 目录
 - 编辑 `index.js` 和 `wrangler.toml` (配置密钥)
 - `wrangler config` 配置邮箱、密钥
 - `wrangler build` 构建
 - `wrangler publish` 发布
 - 详细文档：<https://developers.cloudflare.com/workers/quickstart>
+
+#### Cloudflare 仪表板
+- 转到 [Cloudflare 仪表板](https://dash.cloudflare.com)，然后切换到 `Workers` 标签
+- `创建服务`
+- `快速编缉`
+- 清空编辑器
+- 复制 [`cors/index.js`](cors/index.js) 中的代码到编辑器 (如果不需要日志，也可以使用 [`pages/_worker.js`](pages/_worker.js))
+- 如有需要，编缉配置
+- `保存并部署`
 
 ### 套餐
  CPU | 日请求 | 突发速率 | 脚本大小 
@@ -46,7 +59,7 @@ fetch("https://cors.eu.org/" + $url).then(x => x.text()).then(console.log)
 - 示例
 - <https://seep.eu.org/https://api.github.com>
 
-### 安装
+### 部署
 ```
 npm install wrangler@beta # 安装
 npx wrangler pages dev --help # 查看帮助（nodejs version >= 16.x）
