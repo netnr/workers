@@ -20,13 +20,26 @@ var $url = "http://wthrcdn.etouch.cn/weather_mini?citykey=101040100";
 fetch("https://cors.eu.org/" + $url).then(x => x.text()).then(console.log)
 ```
 
-### Install
-- clone the project and enter the cors directory
+### Deploy
+
+> The mechanism of both methods is the same
+
+#### wrangler
+- Clone the project and enter the cors directory
 - Edit `index.js` and `wrangler.toml` (configuration key)
 - `wrangler config` configure mailbox and key
 - `wrangler build` build
 - `wrangler publish` release
 - Detailed documentation: <https://developers.cloudflare.com/workers/quickstart>
+
+#### Cloudflare Dashboard
+- Turn to [Cloudflare Dashboard](https://dash.cloudflare.com), then switch to the `Workers` tab
+- `Create a service`
+- `Quick edit`
+- Clear the editor
+- Copy the code from [`cors/index.js`](cors/index.js) to the editor (if you don't care about logging, [`pages/_worker.js`](pages/_worker.js) is another choice)
+- Edit the configurations if necessary
+- `Save and Deploy`
 
 ### Price
   CPU  | Daily request | Burst rate | Script size
@@ -46,7 +59,7 @@ The amount can't hold up, please use your account to build the service if you us
 - `https://seep.eu.org/{URL}`
 - Demo: <https://seep.eu.org/https://api.github.com>
 
-### Install
+### Deploy
 ```
 npm install wrangler@beta # install
 npx wrangler pages dev --help # View help (nodejs version >= 16.x)
