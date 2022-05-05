@@ -5,6 +5,16 @@ export default {
 }
 
 /**
+ * Configurations
+ */
+const config = {
+    // 是否丢弃请求中的 Referer，在目标网站应用防盗链时有用
+    dropReferer: false,
+    // 黑名单，URL 中含有任何一个关键字都会被阻断
+    blockList: [".m3u8", ".ts", ".acc", ".m4s", "photocall.tv", "googlevideo.com", "liveradio.ie"],
+};
+
+/**
  * Respond to the request
  * @param {Request} request
  */
@@ -38,7 +48,7 @@ async function handleRequest(request) {
         else if (blocker.check(url)) {
             outBody = JSON.stringify({
                 code: 403,
-                msg: 'The keyword "' + blocker.keys.join(' , ') + '" was blacklisted by the operator of this proxy.'
+                msg: 'The keyword "' + config.blockList.join(' , ') + '" was block-listed by the operator of this proxy.'
             });
             outCt = "application/json";
             outStatus = 403;
@@ -53,10 +63,13 @@ async function handleRequest(request) {
             }
 
             //保留头部其它信息
+            const dropHeaders = ['content-length', 'content-type', 'host'];
+            if (config.dropReferer) dropHeaders.push('referer');
             let he = reqHeaders.entries();
             for (let h of he) {
-                if (!['content-length', 'content-type', 'host'].includes(h[0])) {
-                    fp.headers[h[0]] = h[1];
+                const key = h[0], value = h[1];
+                if (!dropHeaders.includes(key)) {
+                    fp.headers[key] = value;
                 }
             }
 
@@ -121,10 +134,9 @@ function fixUrl(url) {
  * 阻断器
  */
 const blocker = {
-    keys: [".m3u8", ".ts", ".acc", ".m4s", "photocall.tv", "googlevideo.com", "liveradio.ie"],
     check: function (url) {
         url = url.toLowerCase();
-        let len = blocker.keys.filter(x => url.includes(x)).length;
+        let len = config.blockList.filter(x => url.includes(x)).length;
         return len != 0;
     }
 }

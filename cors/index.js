@@ -12,6 +12,18 @@ addEventListener('fetch', event => {
 })
 
 /**
+ * Configurations
+ */
+const config = {
+    // 从 https://sematext.com/ 申请并修改令牌
+    sematextToken: "d6945da2-06af-46a3-b394-b862e44ac537",
+    // 是否丢弃请求中的 Referer，在目标网站应用防盗链时有用
+    dropReferer: false,
+    // 黑名单，URL 中含有任何一个关键字都会被阻断
+    blockList: [".m3u8", ".ts", ".acc", ".m4s", "photocall.tv", "googlevideo.com", "liveradio.ie"],
+};
+
+/**
  * Respond to the request
  * @param {Request} request
  */
@@ -47,7 +59,7 @@ async function handleRequest(event) {
         else if (blocker.check(url)) {
             outBody = JSON.stringify({
                 code: 403,
-                msg: 'The keyword: ' + blocker.keys.join(' , ') + ' was blocklisted by the operator of this proxy.'
+                msg: 'The keyword: ' + config.blockList.join(' , ') + ' was block-listed by the operator of this proxy.'
             });
             outCt = "application/json";
             outStatus = 403;
@@ -62,10 +74,13 @@ async function handleRequest(event) {
             }
 
             //保留头部其它信息
+            const dropHeaders = ['content-length', 'content-type', 'host'];
+            if (config.dropReferer) dropHeaders.push('referer');
             let he = reqHeaders.entries();
             for (let h of he) {
-                if (!['content-length', 'content-type', 'host'].includes(h[0])) {
-                    fp.headers[h[0]] = h[1];
+                const key = h[0], value = h[1];
+                if (!dropHeaders.includes(key)) {
+                    fp.headers[key] = value;
                 }
             }
 
@@ -110,7 +125,7 @@ async function handleRequest(event) {
         headers: outHeaders
     })
 
-    //日志接口（申请自己的应用修改密钥后可取消注释）
+    //日志接口（申请自己的应用修改令牌后可取消注释）
     sematext.add(event, request, response);
 
     return response;
@@ -133,10 +148,9 @@ function fixUrl(url) {
  * 阻断器
  */
 const blocker = {
-    keys: [".m3u8", ".ts", ".acc", ".m4s", "photocall.tv", "googlevideo.com", "liveradio.ie"],
     check: function (url) {
         url = url.toLowerCase();
-        let len = blocker.keys.filter(x => url.includes(x)).length;
+        let len = config.blockList.filter(x => url.includes(x)).length;
         return len != 0;
     }
 }
@@ -145,10 +159,6 @@ const blocker = {
  * 日志
  */
 const sematext = {
-
-    // 从 https://sematext.com/ 申请并修改密钥
-    token: "d6945da2-06af-46a3-b394-b862e44ac537",
-
     /**
      * 头转object
      * @param {any} headers
@@ -205,7 +215,7 @@ const sematext = {
      * @param {any} response
      */
     add: (event, request, response) => {
-        let url = `https://logsene-receiver.sematext.com/${sematext.token}/example/`;
+        let url = `https://logsene-receiver.sematext.com/${config.sematextToken}/example/`;
         const body = sematext.buildBody(request, response);
 
         event.waitUntil(fetch(url, body))
