@@ -45,7 +45,7 @@ async function handleRequest(request) {
             outStatus = invalid ? 400 : 200;
         }
         //阻断
-        else if (blocker.check(url)) {
+        else if (blockUrl(url)) {
             outBody = JSON.stringify({
                 code: 403,
                 msg: 'The keyword "' + config.blockList.join(' , ') + '" was block-listed by the operator of this proxy.'
@@ -130,13 +130,9 @@ function fixUrl(url) {
     }
 }
 
-/**
- * 阻断器
- */
-const blocker = {
-    check: function (url) {
-        url = url.toLowerCase();
-        let len = config.blockList.filter(x => url.includes(x)).length;
-        return len != 0;
-    }
+// 阻断 url
+function blockUrl(url) {
+    url = url.toLowerCase();
+    let len = config.blockList.filter(x => url.includes(x)).length;
+    return len != 0;
 }
