@@ -53,19 +53,33 @@ fetch("https://cors.eu.org/" + $url).then(x => x.text()).then(console.log)
 
 ---
 
-## 🧡 pages (Cloudflare Pages Functions )
+## 🧡 pages (Cloudflare Pages Functions)
 ### 使用
 - `https://seep.eu.org/{URL}`
 - 示例
 - <https://seep.eu.org/https://api.github.com>
 
 ### 部署
+
+> 两种方法的工作原理一致
+
+#### wrangler
 ```
 npm install wrangler@beta # 安装
 npx wrangler pages dev --help # 查看帮助（nodejs version >= 16.x）
 npx wrangler pages dev ./ # 进入 pages 目录运行
 ```
 详细文档：<https://developers.cloudflare.com/pages/platform/functions>
+
+#### Cloudflare 仪表板
+- Fork 这个项目
+- 如有需要，编缉 [`pages/_worker.js`](pages/_worker.js) 中的配置
+- 转到 [Cloudflare 仪表板](https://dash.cloudflare.com)，然后切换到 `Pages` 标签
+- `创建项目 ▼` -> `连接到 Git`
+- 连接你的 GitHub 账户，选择刚刚创建的 fork
+- `开始设置`
+- 填写 `构建设置`: `框架预设` - <ins>`None`</ins>; `构建命令` - <ins>留空</ins>; `构建输出目录` - <ins>`pages`</ins>
+- `保存并部署`
 
 ### 套餐
 每天的调用请求总数上限为 100,000。如果达到每日限制，Pages 将停止执行函数并回退到仅提供静态资源。
