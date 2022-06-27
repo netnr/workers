@@ -1,6 +1,6 @@
 ﻿English | [简体中文](README_zh-CN.md)
 
-> ## Note: Block a large number of requests, please deploy yourself
+> ## Note: Blocking a large number of requests, please deploy it yourself
 
 ---
 
@@ -61,7 +61,7 @@ The amount can't hold up, please use your account to build the service if you us
 
 ### Deploy
 ```
-npm install wrangler@beta # install
+npm install wrangler # install
 npx wrangler pages dev --help # View help (nodejs version >= 16.x)
 npx wrangler pages dev ./ # Enter the pages directory and run
 ```

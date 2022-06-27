@@ -1,7 +1,7 @@
 /*
  * https://github.com/netnr/workers
  *
- * 2019-10-12 - 2022-05-05
+ * 2019-10-12 - 2022-06-27
  * netnr
  */
 
@@ -18,9 +18,7 @@ const config = {
     // 从 https://sematext.com/ 申请并修改令牌
     sematextToken: "00000000-0000-0000-0000-000000000000",
     // 是否丢弃请求中的 Referer，在目标网站应用防盗链时有用
-    dropReferer: false,
-    // 黑名单，URL 中含有任何一个关键字都会被阻断
-    blockList: [".m3u8", ".ts", ".acc", ".m4s", "photocall.tv", "googlevideo.com", "liveradio.ie"],
+    dropReferer: false
 };
 
 /**
@@ -50,19 +48,11 @@ async function handleRequest(event) {
             outBody = JSON.stringify({
                 code: invalid ? 400 : 0,
                 usage: 'Host/{URL}',
-                source: 'https://github.com/netnr/workers'
+                source: 'https://github.com/netnr/workers',
+                note: 'Blocking a large number of requests, please deploy it yourself'
             });
             outCt = "application/json";
             outStatus = invalid ? 400 : 200;
-        }
-        //阻断
-        else if (blockUrl(url)) {
-            outBody = JSON.stringify({
-                code: 403,
-                msg: 'The keyword: ' + config.blockList.join(' , ') + ' was block-listed by the operator of this proxy.'
-            });
-            outCt = "application/json";
-            outStatus = 403;
         }
         else {
             url = fixUrl(url);
@@ -144,13 +134,6 @@ function fixUrl(url) {
     } else {
         return "http://" + url;
     }
-}
-
-// 阻断 url
-function blockUrl(url) {
-    url = url.toLowerCase();
-    let len = config.blockList.filter(x => url.includes(x)).length;
-    return len != 0;
 }
 
 /**
