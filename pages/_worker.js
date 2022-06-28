@@ -5,14 +5,6 @@ export default {
 }
 
 /**
- * Configurations
- */
-const config = {
-    // 是否丢弃请求中的 Referer，在目标网站应用防盗链时有用
-    dropReferer: false
-};
-
-/**
  * Respond to the request
  * @param {Request} request
  */
@@ -54,7 +46,6 @@ async function handleRequest(request) {
 
             //保留头部其它信息
             const dropHeaders = ['content-length', 'content-type', 'host'];
-            if (config.dropReferer) dropHeaders.push('referer');
             let he = reqHeaders.entries();
             for (let h of he) {
                 const key = h[0], value = h[1];

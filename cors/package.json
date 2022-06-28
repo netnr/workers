@@ -1,16 +1,12 @@
 {
-  "private": true,
   "name": "cors",
-  "version": "1.0.0",
-  "description": "cors",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write '**/*.{js,css,json,md}'"
-  },
-  "author": "netnr",
-  "license": "MIT",
+  "version": "0.0.0",
   "devDependencies": {
-    "prettier": "^1.18.2"
+    "wrangler": "2.0.15"
+  },
+  "private": true,
+  "scripts": {
+    "start": "wrangler dev",
+    "deploy": "wrangler publish"
   }
 }

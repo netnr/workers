@@ -1,19 +1,18 @@
 /*
  * https://github.com/netnr/workers
  *
- * 2019-10-12 - 2022-06-27
+ * 2019-10-12 - 2022-06-28
  * netnr
  */
 
 addEventListener('fetch', event => {
     event.passThroughOnException()
-
     event.respondWith(handleRequest(event))
 })
 
 /**
- * Configurations
- */
+* Configurations
+*/
 const config = {
     // 从 https://sematext.com/ 申请并修改令牌
     sematextToken: "00000000-0000-0000-0000-000000000000",
@@ -22,9 +21,9 @@ const config = {
 };
 
 /**
- * Respond to the request
- * @param {Request} request
- */
+* Respond to the request
+* @param {Request} request
+*/
 async function handleRequest(event) {
     const { request } = event;
 
@@ -137,8 +136,8 @@ function fixUrl(url) {
 }
 
 /**
- * 日志
- */
+* 日志
+*/
 const sematext = {
 
     /**
