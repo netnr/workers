@@ -1,6 +1,7 @@
 ﻿English | [简体中文](README_zh-CN.md)
 
-> ## Note: Blocking a large number of requests, please deploy it yourself
+> ### Blocking a large number of requests, please deploy it yourself
+> ### WAF has blocked keywords .m3u8 .ts .m4 .acc .tv tv. .live .stream etc. (dynamically adjusted according to logs)
 
 ## 🧡 cors (Cloudflare Workers)
 Support cross-domain request  
@@ -13,8 +14,8 @@ Convert HTTP to HTTPS
 
 ```js
 // Copy to the console and run
-var url = "http://wthrcdn.etouch.cn/weather_mini?citykey=101040100";
-fetch(`https://cors.eu.org/${url}`).then(x => x.text()).then(console.log)
+var url = "http://www.weather.com.cn/data/sk/101040100.html";
+await (await fetch(`https://cors.eu.org/${url}`)).text();
 ```
 
 ### Price
@@ -35,6 +36,7 @@ The amount can't hold up, please use your account to build the service if you us
 
 
 ### Limit
+`seep.eu.org` access to pure http will have a certificate error Invalid SSL certificate `Error code 526`  
 The total number of invocation requests per day is capped at 100,000. If the daily limit is reached, Pages will stop executing the function and fall back to providing only static resources.
 
 Details: <https://developers.cloudflare.com/pages/platform/functions>
