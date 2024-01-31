@@ -1,7 +1,7 @@
 ﻿[English](README.md) | 简体中文
 
-> ### 阻断大量请求，请自己部署
-> ### WAF 已屏蔽关键字 .m3u8 .ts .m4 .acc .tv tv. .live .stream 等（根据日志动态调整）
+> ### 阻断大量请求，请自己部署，WAF 已屏蔽关键字 .m3u8 .ts .m4 .acc .tv tv. .live .stream 等（根据日志动态调整）
+> ### 2024-01-31 不受限制的代理服务请使用 https://seep.eu.org 
 
 ## 🧡 cors (Cloudflare Workers)
 支持跨域请求（转换不支持跨域请求的接口），可直接发起 ajax、fetch  
@@ -14,7 +14,7 @@
 
 ```js
 // 拷贝到控制台运行
-var url = "http://www.weather.com.cn/data/sk/101040100.html";
+var url = "nginx.org/en/CHANGES";
 await (await fetch(`https://cors.eu.org/${url}`)).text();
 ```
 
@@ -29,13 +29,8 @@ CPU | 日请求 | 突发速率 | 脚本大小
 ![溢出](https://gs.zme.ink/2019/11/03/0752457693.png)
 
 ## 🧡 pages (Cloudflare Pages Functions )
-### 使用
-- `https://seep.eu.org/{URL}`
-- <https://seep.eu.org/https://api.github.com>
-
 ### FAQ
-`seep.eu.org` 访问纯 http 会证书错误 Invalid SSL certificate `Error code 526`  
-每天的调用请求总数上限为 100,000。如果达到每日限制，Pages 将停止执行函数并回退到仅提供静态资源。
+Cloudflare Pages Functions 访问纯 http 会证书错误 Invalid SSL certificate `Error code 526`  
 
 详细文档：<https://developers.cloudflare.com/pages/platform/functions>
 

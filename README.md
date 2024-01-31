@@ -1,7 +1,7 @@
 ﻿English | [简体中文](README_zh-CN.md)
 
-> ### Blocking a large number of requests, please deploy it yourself
-> ### WAF has blocked keywords .m3u8 .ts .m4 .acc .tv tv. .live .stream etc. (dynamically adjusted according to logs)
+> ### To block a large number of requests, please deploy it yourself. WAF has blocked keywords .m3u8 .ts .m4 .acc .tv tv. .live .stream, etc. (dynamically adjusted according to logs)
+> ### 2024-01-31 For unrestricted proxy service please use https://seep.eu.org
 
 ## 🧡 cors (Cloudflare Workers)
 Support cross-domain request  
@@ -14,7 +14,7 @@ Convert HTTP to HTTPS
 
 ```js
 // Copy to the console and run
-var url = "http://www.weather.com.cn/data/sk/101040100.html";
+var url = "nginx.org/en/CHANGES";
 await (await fetch(`https://cors.eu.org/${url}`)).text();
 ```
 
@@ -34,10 +34,8 @@ The amount can't hold up, please use your account to build the service if you us
 - `https://seep.eu.org/{URL}`
 - Demo: <https://seep.eu.org/https://api.github.com>
 
-
 ### Limit
-`seep.eu.org` access to pure http will have a certificate error Invalid SSL certificate `Error code 526`  
-The total number of invocation requests per day is capped at 100,000. If the daily limit is reached, Pages will stop executing the function and fall back to providing only static resources.
+Cloudflare Pages Functions access to pure http will have a certificate error Invalid SSL certificate `Error code 526`
 
 Details: <https://developers.cloudflare.com/pages/platform/functions>
 
