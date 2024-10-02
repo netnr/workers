@@ -1,12 +1,12 @@
 {
   "name": "cors",
   "version": "0.0.0",
-  "devDependencies": {
-    "wrangler": "2.0.15"
-  },
   "private": true,
   "scripts": {
-    "start": "wrangler dev",
-    "deploy": "wrangler publish"
+    "prod": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "devDependencies": {
+    "wrangler": "^3.60.3"
   }
 }
